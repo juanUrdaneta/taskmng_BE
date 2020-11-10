@@ -9,13 +9,18 @@ const DB = process.env.DATABASE.replace(
     process.env.DATABASE_PASSWORD
 );
 
-mongoose.connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-}).then(() => {
-    console.log('DB Connection Successful');
-}).catch((err) => console.log(err.name, err.message));
+mongoose
+    .connect(DB, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('DB Connection Successful');
+    })
+    .catch((err) => console.log(err.name, err.message));
 
-app.listen(process.env.PORT, ()=>console.log(`listening at: ${process.env.PORT}`));
+app.listen(process.env.PORT, () =>
+    console.log(`listening at: ${process.env.PORT}`)
+);
