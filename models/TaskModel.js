@@ -37,7 +37,7 @@ const taskSchema = new mongoose.Schema(
     }
 );
 
-this.pre('find', function (next) {
+taskSchema.pre('find', function (next) {
     this.populate({
         path: 'User',
         select: '-__v -password',
