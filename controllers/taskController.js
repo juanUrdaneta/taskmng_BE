@@ -1,48 +1,56 @@
-const { translateAliases } = require('../models/TaskModel');
+const { doc } = require('prettier');
 const Task = require('../models/TaskModel');
+const AppError = require('../utils/appErrors');
+const catchAsync = require('../utils/catchAsyncMethod');
 
-exports.createTask = async (req, res, next) => {
+const documentNotFound = new AppError('No document found with that ID', 404);
+
+exports.createTask = catchAsync(async (req, res, next) => {
     const document = await Task.create(req.body);
 
     res.status(201).json({
         status: 'success',
         data: document,
     });
-};
+});
 
-exports.getAllTasks = async (req, res, next) => {
+exports.getAllTasks = catchAsync(async (req, res, next) => {
     const document = await Task.find();
 
     res.status(200).json({
         status: 'success',
         data: document,
     });
-};
+});
 
-exports.getTask = async (req, res, next) => {
+exports.getTask = catchAsync(async (req, res, next) => {
     const document = await Task.findById(req.params.id);
-
+    if (!document) return next(documentNotFound);
     res.status(200).json({
         status: 'sucess',
         data: document,
     });
-};
+});
 
-exports.updateTask = async (req, res, next) => {
+exports.updateTask = catchAsync(async (req, res, next) => {
     const document = await Task.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
     });
+    if (!document) return next(documentNotFound);
     res.status(200).json({
         status: 'sucess',
         data: document,
     });
-};
+});
 
-exports.deleteTask = async (req, res, next) => {
-    await Task.findByIdAndDelete(req.params.id);
+exports.deleteTask = catchAsync(async (req, res, next) => {
+    const document = await Task.findByIdAndDelete(req.params.id);
+
+    if (!document) return next(documentNotFound);
+
     res.status(204).json({
         status: 'sucess',
         data: null,
     });
-};
+});
