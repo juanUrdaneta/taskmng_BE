@@ -3,7 +3,10 @@ const Task = require('../models/TaskModel');
 const AppError = require('../utils/appErrors');
 const catchAsync = require('../utils/catchAsyncMethod');
 
-const documentNotFound = new AppError('No document found with that ID', 404);
+const documentNotFoundError = new AppError(
+    'No document found with that ID',
+    404
+);
 
 exports.createTask = catchAsync(async (req, res, next) => {
     const document = await Task.create(req.body);
@@ -25,7 +28,7 @@ exports.getAllTasks = catchAsync(async (req, res, next) => {
 
 exports.getTask = catchAsync(async (req, res, next) => {
     const document = await Task.findById(req.params.id);
-    if (!document) return next(documentNotFound);
+    if (!document) return next(documentNotFoundError);
     res.status(200).json({
         status: 'sucess',
         data: document,
@@ -37,7 +40,7 @@ exports.updateTask = catchAsync(async (req, res, next) => {
         new: true,
         runValidators: true,
     });
-    if (!document) return next(documentNotFound);
+    if (!document) return next(documentNotFoundError);
     res.status(200).json({
         status: 'sucess',
         data: document,
@@ -47,7 +50,7 @@ exports.updateTask = catchAsync(async (req, res, next) => {
 exports.deleteTask = catchAsync(async (req, res, next) => {
     const document = await Task.findByIdAndDelete(req.params.id);
 
-    if (!document) return next(documentNotFound);
+    if (!document) return next(documentNotFoundError);
 
     res.status(204).json({
         status: 'sucess',
