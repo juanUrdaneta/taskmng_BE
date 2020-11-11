@@ -22,6 +22,7 @@ const taskSchema = new mongoose.Schema(
                     'Available statuses are: To Do, In Progress, Done or Deleted',
             },
         },
+
         startDate: {
             type: Date,
             default: Date.now(),
@@ -42,6 +43,7 @@ taskSchema.pre('find', function (next) {
         path: 'User',
         select: '-__v -password',
     });
+    next();
 });
 
 const Task = mongoose.model('Task', taskSchema);
