@@ -30,7 +30,13 @@ const taskSchema = new mongoose.Schema(
         endDate: {
             type: Date,
         },
+        createdBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
         assignees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+        isDeleted: {
+            type: Boolean,
+            default: false,
+            select: false,
+        },
     },
     {
         toObject: { virtuals: true },

@@ -7,10 +7,14 @@ const router = express.Router();
 
 router.use('/:taskId/comment', commentRoutes);
 
+router.use(authController.protect);
+
+router.delete('/deleteMyTask/:taskId', taskController.removeTask);
+
 router
     .route('/')
     .get(taskController.getAllTasks)
-    .post(taskController.createTask);
+    .post(taskController.addUserForNewTask, taskController.createTask);
 
 router
     .route('/:id')
