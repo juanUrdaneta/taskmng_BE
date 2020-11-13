@@ -20,9 +20,10 @@ exports.removeTask = catchAsync(async (req, res, next) => {
     const task = await Task.findById(req.params.taskId);
 
     console.log(req.user.id, task.createdBy);
-    if (task.createdBy == req.user.id) {
+    if (task.createdBy.toString() === req.user.id) {
         await Task.findByIdAndUpdate(req.params.taskId, {
             isDeleted: true,
+            status: deleted,
         });
     } else {
         return next(
