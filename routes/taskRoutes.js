@@ -1,8 +1,11 @@
 const express = require('express');
 const taskController = require('../controllers/taskController');
 const authController = require('../controllers/authController');
+const commentRoutes = require('./commentRoutes');
 
 const router = express.Router();
+
+router.use('/:taskId/comment', commentRoutes);
 
 router
     .route('/')
