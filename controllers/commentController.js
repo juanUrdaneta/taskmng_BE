@@ -20,7 +20,7 @@ exports.setIds = (req, res, next) => {
 
 exports.deleteMyComment = catchAsync(async (req, res, next) => {
     const comment = await Comment.findById(req.params.commentId);
-    if (comment.user && req.user.id) {
+    if (comment.user === req.user.id) {
         await Comment.findByIdAndRemove(comment.id);
     } else {
         return next(
