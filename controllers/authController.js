@@ -35,7 +35,6 @@ exports.signup = catchAsync(async (req, res, next) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        role: 'user',
     });
 
     createAndSendToken(newUser, 201, res);
