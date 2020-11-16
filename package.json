@@ -12,6 +12,7 @@
         "mongoose": "^5.10.13"
     },
     "devDependencies": {
+        "node-pre-gyp": "^0.16.0",
         "nodemon": "^2.0.6",
         "prettier": "^2.1.2"
     },
