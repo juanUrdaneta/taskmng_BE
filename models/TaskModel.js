@@ -22,7 +22,7 @@ const taskSchema = new mongoose.Schema(
                     'Available statuses are: To Do, In Progress, Done or Deleted',
             },
         },
-
+        tags: [String],
         startDate: {
             type: Date,
             default: Date.now(),
@@ -44,12 +44,22 @@ const taskSchema = new mongoose.Schema(
     }
 );
 
+taskSchema.virtual('duration').get(function () {
+    return (
+        ((this.endDate || Date.now()) - this.startDate) / 1000 / 60 / 60 / 24
+    );
+});
+
 taskSchema.pre('find', function (next) {
     this.populate({
         path: 'User',
         select: '-__v -password',
     });
     next();
+});
+
+taskSchema.post(/^find/, function () {
+    console.log(this.endDate);
 });
 
 const Task = mongoose.model('Task', taskSchema);

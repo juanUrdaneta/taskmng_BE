@@ -9,6 +9,9 @@ router.use('/:taskId/comment', commentRoutes);
 
 router.use(authController.protect);
 
+router.get('/getTaskStats', taskController.taskStats);
+router.patch('/addTag/:taskId', taskController.addTags);
+router.patch('/updateStatus/:taskId', taskController.updateStatus);
 router.delete('/deleteMyTask/:taskId', taskController.removeTask);
 
 router
