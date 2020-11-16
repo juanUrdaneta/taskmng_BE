@@ -16,26 +16,6 @@ exports.addUserForNewTask = (req, res, next) => {
     next();
 };
 
-exports.removeTask = catchAsync(async (req, res, next) => {
-    const task = await Task.findById(req.params.taskId);
-
-    console.log(req.user.id, task.createdBy);
-    if (task.createdBy.toString() === req.user.id) {
-        await Task.findByIdAndUpdate(req.params.taskId, {
-            isDeleted: true,
-            status: deleted,
-        });
-    } else {
-        return next(
-            new AppError('You are not allowed to delete this task', 400)
-        );
-    }
-
-    res.status(204).json({
-        status: 'success',
-    });
-});
-
 exports.addTags = catchAsync(async (req, res, next) => {
     const tags = req.body.tags.map((tag) =>
         tag[0].toUpperCase().concat(tag.substring(1))
@@ -105,4 +85,22 @@ exports.taskStats = catchAsync(async (req, res, next) => {
     });
 });
 
-// exports.getStats = catchAsync(async (req, res, next) => {});
+exports.removeTask = catchAsync(async (req, res, next) => {
+    const task = await Task.findById(req.params.taskId);
+
+    console.log(req.user.id, task.createdBy);
+    if (task.createdBy.toString() === req.user.id) {
+        await Task.findByIdAndUpdate(req.params.taskId, {
+            isDeleted: true,
+            status: deleted,
+        });
+    } else {
+        return next(
+            new AppError('You are not allowed to delete this task', 400)
+        );
+    }
+
+    res.status(204).json({
+        status: 'success',
+    });
+});
